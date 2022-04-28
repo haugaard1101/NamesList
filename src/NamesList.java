@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ public class NamesList {
     names = new ArrayList<>();
   }
 
-  public void startUserInterface() throws FileNotFoundException {
+  public void startUserInterface(PrintStream ps) throws FileNotFoundException {
     System.out.println("""
         Welcome to the NamesList - enterprise edition.
         ----------------------------------------------
@@ -25,7 +26,7 @@ public class NamesList {
       switch (choice) {
         case 1 -> displayListOfNames();
         case 2 -> loadListOfNames();
-        case 3 -> saveListOfNames();
+        case 3 -> saveListOfNames(ps);
         case 4 -> enterNames();
         case 0 -> exit();
         default -> System.out.println("Unknown command - please use 0-4");
@@ -38,7 +39,7 @@ public class NamesList {
     System.out.println("""
         1) Display list of names
         2) Load list of names
-        3) Save list of names (not implemented)
+        3) Save list of names
         4) Enter names
         0) Exit
         """);
@@ -62,12 +63,14 @@ public class NamesList {
     System.out.println("Done");
   }
 
-  private void saveListOfNames() {
-    // TODO: Implement save of the names list to a file
-    System.out.println("NOT IMPLEMENTED");
+  private void saveListOfNames(PrintStream ps) {
+    for (String name : names) {
+      ps.println(name);
+    }
   }
 
   private void loadListOfNames() throws FileNotFoundException {
+    names.clear();
     Scanner loader = new Scanner(new File("names.txt"));
     String name;
     while (loader.hasNextLine()) {
@@ -101,7 +104,11 @@ public class NamesList {
 
 
   public static void main(String[] args) throws FileNotFoundException {
+
+    PrintStream ps = new PrintStream("namesSaved.txt");
+
     NamesList app = new NamesList();
-    app.startUserInterface();
+    app.startUserInterface(ps);
+    app.saveListOfNames(ps);
   }
 }
