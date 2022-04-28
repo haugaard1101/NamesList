@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,7 +11,7 @@ public class NamesList {
         names = new ArrayList<>();
     }
 
-    public void startUserInterface() {
+    public void startUserInterface() throws FileNotFoundException {
         System.out.println("""
                 Welcome to the NamesList - enterprise edition.
                 ----------------------------------------------
@@ -42,13 +44,13 @@ public class NamesList {
                 """);
     }
 
-    private void enterNames() {
+    private void enterNames() throws FileNotFoundException {
         System.out.println("""
                 Enter names
                 -----------
                 Enter each name you want to add to the list. End by entering an empty name.
                 """);
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(new File("names.txt"));
         String name = "-nothing yet-";
         while(!name.isBlank() && sc.hasNextLine()) {
             name = sc.nextLine();
@@ -92,7 +94,7 @@ public class NamesList {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         NamesList app = new NamesList();
         app.startUserInterface();
     }
